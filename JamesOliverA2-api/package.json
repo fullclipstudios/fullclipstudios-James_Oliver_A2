@@ -1,0 +1,17 @@
+{
+  "name": "jamesolivera2-api",
+  "version": "1.0.0",
+  "main": "crowdfunding_db.js",
+  "scripts": {
+    "start": "node crowdfunding_db.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.20.0",
+    "http": "^0.0.1-security",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.11.2"
+  }
+}
