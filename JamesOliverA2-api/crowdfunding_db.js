@@ -26,3 +26,11 @@ connection.query('SELECT * FROM Fundraiser',
 	console.log(`${row.ORGANIZER}'s caption is ${row.CAPTION}`);
 	})
 	});
+	
+// insert into database
+const fundraiser = {FUNDRAISER_ID: 12345, ORGANIZER: "new", CAPTION: "your caption", TARGET_FUNDING: 12345, CURRENT_FUNDING: 12345, CITY: "Syd", ACTIVE: true, CATEGORY_ID: 1};
+connection.query("INSERT INTO Fundraiser SET ?", fundraiser, (err, res) =>{
+if (err) throw err;
+console.log("Last inserted ID:", res.insertId);
+}
+);

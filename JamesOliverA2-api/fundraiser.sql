@@ -15,17 +15,17 @@ FOREIGN KEY (CATEGORY_ID)REFERENCES CATEGORY (CATEGORY_ID)
 );
 
 CREATE TABLE CATEGORY (
-CATEGORY_ID int (5) auto_increment,
+CATEGORY_ID int (5),
 NAME varchar (50),
 PRIMARY KEY (CATEGORY_ID)
 );
 
 INSERT INTO FUNDRAISER (FUNDRAISER_ID, ORGANIZER, CAPTION, TARGET_FUNDING, CURRENT_FUNDING, CITY, ACTIVE, CATEGORY_ID) VALUES
-(11033, "Community Talent Show", "Showcase the Talent", 1000, 0, "Sydney", FALSE, 1 ),
-(26280, "Fun Run", "Run for a cause", 10000, 2000, "Melbourne", TRUE, 1 ),
-(78336, "Gaming tournament", "Have fun, win big", 1500, 500, "Cloncurry", TRUE, 1 ),
-(34272, "Community plant reserve", "Help us grow", 15000, 0, "Perth", FALSE, 3 ),
-(99869, "Local Wildlife sanctuary", "Take Action to help animals", 10000, 6000, "Brisbane", TRUE, 5 );
+(11033, "Beyond Blue", "Crisis HotLine", 5000, 500, "Sydney", FALSE, 4 ),
+(26280, "WWF", "Aussie Wilflide Donation", 10000, 2000, "Melbourne", TRUE, 5 ),
+(78336, "RFDS", "Air Ambulance", 20000, 5000, "Cloncurry", TRUE, 4 ),
+(34272, "World Vision", "End Poverty", 15000, 1000, "Perth", FALSE, 1 ),
+(99869, "RSPCA", "Take Action to help animals", 10000, 6000, "Brisbane", TRUE, 5 );
 
 INSERT INTO CATEGORY (NAME) VALUES
 ("Community"),
