@@ -1,4 +1,31 @@
-//Use the mysql2 library
+//read db details file
+var dbDetails = require("./db_details");
+
+//connect to mysql
+var mysql = require("mysql2");
+
+var bodyParser = require("body-parser");
+
+//connect to db
+module.exports =
+{
+	getconnection:() => {
+		return mysql.createConnection({
+			host:dbDetails.host,
+			user:dbDetails.user,
+			password:dbDetails.password,
+			database:dbDetails.database
+		});
+	}
+}
+
+
+
+
+
+
+
+/* //Use the mysql2 library
 const mysql = require("mysql2");
 
 //set up database connection
@@ -10,7 +37,7 @@ const connection = mysql.createConnection({
 });
 
 //display connection success message in terminal
-connection.connect((err) =>{
+mysql.connect((err) =>{
 	if (err) throw err;
 	console.log(">>--Connection Established--<<");
 });
@@ -33,4 +60,4 @@ connection.query("INSERT INTO Fundraiser SET ?", fundraiser, (err, res) =>{
 if (err) throw err;
 console.log("Last inserted ID:", res.insertId);
 }
-);
+); */
