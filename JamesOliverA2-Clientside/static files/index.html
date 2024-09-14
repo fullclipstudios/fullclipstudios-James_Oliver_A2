@@ -1,52 +1,112 @@
 <!DOCTYPE html>
+<!--
+Design: James Oliver
+Name       : James' assessment 2 webpage - fundraisers
+Description: A two-column, fixed-width design for 1024x768 screen resolutions.
+Version    : 1.0
+Released   : 2024
+-->
 
-<html>
-	<head>
+<!-- language set -->
+<html lang="en">
+
+<head>
+	<!-- font size set -->
+	<meta charset="utf-8">
 	
-		<!-- Style sheet link -->
-		<link rel = "stylesheet" type = "text/css" href = "style.css">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<!-- Tab title -->
-		<title>Fundraisers For a Better World</title>
-		
-		<!-- Page title -->
-		<h1>Fundraisers For a Better World - Give today!</h1>
-		
-		<!-- Menu -->
-		<span> Home </span> | <a href="Search"> <span>Search</span></a> | <a href="Fundraisers"> <span>Fundraisers</span></a>
-		
-		
-		
-		
-	</head>
+	<!-- tab text set-->
+	<title>Fundraisers For a Better World</title>
 	
-	<body>
-		<div class="info_box_container">
-		
-		<div class= "info_box">
-		<h2 class = "header_box">Welcome</h2>
-		<p>Welcome to Fundraisers for a Better World</p>
-		</div>
-		
-		<div class= "info_box">
-		<h2 class = "header_box">Stories</h2>
-		<p>about us</p>
-		</div>
-		
-		<div class= "info_box">
-		<h2 class = "header_box">Contact Us</h2>
-		<p>about us</p>
-		</div>
-		
-		</div>
+	<!-- style sheet link -->
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 	
-		<br>
-		<!-- Image-->	
-		<div class="imagine_cont">
-		<img src="happy1.jpg" class= "mainimage" style = "width: 100%; height: 10%;">
+	<!-- text align for this specific page-->
+	<style>
+		p{text-align: left;
+		}
+	</style>
+	
+	
+</head>
+
+<body>
+
+<!-- menu -->
+<div id="header-wrapper">
+	<header>
+		<div id="menu">
+			<ul>
+				<li class="current_page_item"><a href="#">Home</a></li>
+				<li><a href="search.html">Search Fundraiers</a></li>
+				<li><a href="fundraisers.html">View All Fundraisers</a></li>
+			</ul>
 		</div>
-	</body>
+		<!-- end #menu -->
+	</header>
+	<!-- end #header -->
+	
+</div>
+<!-- end #header-wrapper -->
+
+<!-- page content start-->
+<div id="page">
+	<div id="logo">
+	<!-- page heading -->
+		<h1>Fundraisers for A Better World</h1>
+	</div>
+	<hr />
+
+	
+	<div id="content">
+		
+			<!-- introduction text-->
+			<div class="post">
+				<h2 class="title">Welcome</h2>
+				<p>Welcome to Fundraisers for a Better World, we are dedicated to empowering communities and supporting meaningful causes through our effective 
+				and innovative fundraising. Our platform connects individuals and organizations with a variety of charitable initiatives.</p>
+			</div>
+			<!-- end introdiction text-->
+			
+			<!-- post block 1-->
+			<div class="post">
+				<h2 class="title">Success stories</h2>
+				
+				<h3>Lismore flood fundraiser</h3>
+				<p> In the wake of the devasting Lismore floods, the Hope for Healing campaign was launched to provide relief to affected families. The campaign, 
+				lead by local volunteers and supported through our fundraising platform, raises over $10,000 in funds for emergency supplies, temporary housing, and long-term recovery support.
+				</p>
+				<img src="flood2.jpg" alt="flood_photo" width="550" height="350" class="left" />
+				<img src="flood.jpg" alt="flood_photo" width="550" height="350" class="right" />
+				
+			</div>
+			<!-- end post block 1-->
+			
+			<!-- post block 2-->
+			<div class="post">
+				<h2 class="title">Contact Us</h2>
+				<p>  Please feel free to contact us at any time regarding your fundraiser.</p>
+				<p>contact@betterworld.com.au</p>
+			</div>
+			<!-- end post block 2-->
+			
+
+			
+	</div>
+	<!-- end #page -->
+				
+	
+	<div style="clear: both;">&nbsp;</div>
+	
+</div>
+<!-- end #page -->
+
+<!-- footer text -->
+<div style="clear: both;">&nbsp;</div>
+<footer>
+		<p>Copyright (c) 2024. All rights reserved. Design by James Oliver</p>
+</footer>
+<!-- end #footer -->
 
 
+</body>
 </html>
