@@ -36,17 +36,16 @@ Released   : 2024
 	<header>
 		<div id="menu">
 			<ul>
-				<li class="current_page_item"><a href="#">Home</a></li>
-				<li><a href="search.html">Search Fundraiers</a></li>
-				<li><a href="fundraisers.html">View All Fundraisers</a></li>
+				<li class="current_page_item"><a href="/">Home</a></li>
+				<li><a href="search">Search Fundraiers</a></li>
 			</ul>
 		</div>
-		<!-- end #menu -->
+	
 	</header>
-	<!-- end #header -->
+
 	
 </div>
-<!-- end #header-wrapper -->
+
 
 <!-- page content start-->
 <div id="page">
@@ -59,15 +58,80 @@ Released   : 2024
 	
 	<div id="content">
 		
-			<!-- introduction text-->
+			<!-- welcome block-->
 			<div class="post">
 				<h2 class="title">Welcome</h2>
 				<p>Welcome to Fundraisers for a Better World, we are dedicated to empowering communities and supporting meaningful causes through our effective 
 				and innovative fundraising. Our platform connects individuals and organizations with a variety of charitable initiatives.</p>
 			</div>
-			<!-- end introdiction text-->
+
+			<!-- active fundraiers block-->
+			<div id = "data" class= "post">
+				<h2 class="title">Active Fundraisers</h2>
+				
+					<script>
+						//call GET API to get a list of Concerts
+						fetch("http://localhost:8080/api/crowdfunding_db")
+						  .then(response => response.json())
+						  .then(data => {
+							
+							const dataDiv=document.getElementById('data');
+							dataDiv.innerHTML="";
+
+							if(data.length>0){
+							  data.forEach( fundraiser => {
+								
+								// header with organizer name and the caption
+								const header = document.createElement("h3");
+								header.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION} `;
+								
+								//city
+								const cityP = document.createElement("p");
+								cityP.textContent = `City: ${fundraiser.CITY}`;
+								
+								//category
+								const catP = document.createElement("p");
+								catP.textContent = `Category: ${fundraiser.CATEGORY_ID}`;
+								
+								//target funds
+								const targetP = document.createElement("p");
+								targetP.textContent = `Target Funds: ${fundraiser.TARGET_FUNDING}`;
+								
+								//current funds
+								const currentP = document.createElement("p");
+								currentP.textContent = `Current Funds: ${fundraiser.CURRENT_FUNDING}`;
+								
+								//active?
+								const stateP = document.createElement("p");
+								stateP.textContent = `Active?: ${fundraiser.ACTIVE}`;
+								
+								//append in order of display
+								dataDiv.appendChild(header);
+								dataDiv.appendChild(cityP);
+								dataDiv.appendChild(catP);
+								dataDiv.appendChild(targetP);
+								dataDiv.appendChild(currentP);
+								dataDiv.appendChild(stateP);
+								
+								
+								
+							  });
+
+							}
+							else{
+							  dataDiv.textContent="No concert data";
+							}
+						  })
+						  .catch(error=>{
+							console.error("Error fecthing data",error);
+							document.getElementById('data').textContent="Failed to load data";
+						  });
+
+					  </script>
+				
+			</div>
 			
-			<!-- post block 1-->
+			<!-- success stories block-->
 			<div class="post">
 				<h2 class="title">Success stories</h2>
 				
@@ -79,33 +143,33 @@ Released   : 2024
 				<img src="flood.jpg" alt="flood_photo" width="550" height="350" class="right" />
 				
 			</div>
-			<!-- end post block 1-->
+	
 			
-			<!-- post block 2-->
+			<!-- contact us block-->
 			<div class="post">
 				<h2 class="title">Contact Us</h2>
 				<p>  Please feel free to contact us at any time regarding your fundraiser.</p>
 				<p>contact@betterworld.com.au</p>
 			</div>
-			<!-- end post block 2-->
+			
 			
 
 			
 	</div>
-	<!-- end #page -->
+	
 				
 	
 	<div style="clear: both;">&nbsp;</div>
 	
 </div>
-<!-- end #page -->
+
 
 <!-- footer text -->
 <div style="clear: both;">&nbsp;</div>
 <footer>
 		<p>Copyright (c) 2024. All rights reserved. Design by James Oliver</p>
 </footer>
-<!-- end #footer -->
+
 
 
 </body>

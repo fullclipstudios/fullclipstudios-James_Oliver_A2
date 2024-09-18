@@ -1,33 +1,40 @@
 //connect to DB and serve request
 
-//connect to DB
-var db_connection = require ("../crowdfunding_db");
-
-var connection = db_connection.getconnection();
-
-connection.connect();
 
 //use express module
-var express = require("express");
+const express = require("express");
+const router = express.Router();
 
-var router = express.Router();
+//connect to DB
+const db_connection = require ("../crowdfunding_db");
+
+//establish connection
+var connection = db_connection.getconnection();
+
+//access database
+connection.connect();
+
 
 
 //get from fundraiser table
 router.get("/",(req,res) =>{
-	connection.query("SLECT * from fundraiser", (err, records, fields) =>{
+	connection.query("SELECT * FROM fundraiser", (err, records, fields) =>{
 		if (err){
 			console.log("Error retrieving data from fundraiser table");
+			return;
 		}
-		else{
-			res.send(records);
-			console.log(records);
-		}
-	})
-})
+		res.send(records);
+		console.log(records);
+		
+	});
+});
 
-//get by fundraiser ID
-router.get("/:id",(req,res) =>{
+
+//export
+module.exports=router;
+
+//* /get by fundraiser ID
+/* router.get("/:id",(req,res) =>{
 	connection.query("SELECT * from fundraiser where FUNDRAISER_ID=" + request.params.id, (err, records, fields) =>{
 		if (err){
 			console.log("Error retrieving data by FUNDRAISER_ID");
@@ -37,12 +44,12 @@ router.get("/:id",(req,res) =>{
 			res.send(records);
 		}
 	})
-})
+}) */
 
 
 
 //get from category table
-router.get("/",(req,res) =>{
+/* router.get("/",(req,res) =>{
 	connection.query("SLECT * from category", (err, records, fields) =>{
 		if (err){
 			console.log("Error retrieving data from Category table");
@@ -51,10 +58,10 @@ router.get("/",(req,res) =>{
 			res.send(records);
 		}
 	})
-})
+}) */
 
 //get by category
-router.get("/:id",(req,res) =>{
+/* router.get("/:id",(req,res) =>{
 	connection.query("SELECT * from category where CATEGORY_ID=" + request.params.id, (err, records, fields) =>{
 		if (err){
 			console.log("Error retrieving data on Category_ID");
@@ -63,10 +70,10 @@ router.get("/:id",(req,res) =>{
 			res.send(records);
 		}
 	})
-})
+}) */
 
 //get by Active status
-router.get("/:id",(req,res) =>{
+/* router.get("/:id",(req,res) =>{
 	connection.query("SELECT * from fundraiser where ACTICE=true" + request.params.id, (err, records, fields) =>{
 		if (err){
 			console.log("Error retrieving Data on Active elemets");
@@ -75,7 +82,4 @@ router.get("/:id",(req,res) =>{
 			res.send(records);
 		}
 	})
-})
-
-//export
-module.exports=router;
+})  */
