@@ -16,11 +16,25 @@ connection.connect();
 
 
 
-//get from fundraiser table
+//get all data from fundraiser table
 router.get("/",(req,res) =>{
 	connection.query("SELECT * FROM fundraiser", (err, records, fields) =>{
 		if (err){
 			console.log("Error retrieving data from fundraiser table");
+			return;
+		}
+		res.send(records);
+		console.log(records);
+		
+	});
+});
+
+
+//get data from categories table
+router.get("/categories",(req,res) =>{
+	connection.query("SELECT * FROM categories", (err, records, fields) =>{
+		if (err){
+			console.log("Error retrieving data from categories table");
 			return;
 		}
 		res.send(records);

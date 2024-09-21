@@ -70,7 +70,7 @@ Released   : 2024
 				<h2 class="title">Active Fundraisers</h2>
 				
 					<script>
-						//call GET API to get a list of Concerts
+						//call GET API 
 						fetch("http://localhost:8080/api/crowdfunding_db")
 						  .then(response => response.json())
 						  .then(data => {
@@ -95,23 +95,28 @@ Released   : 2024
 								
 								//target funds
 								const targetP = document.createElement("p");
-								targetP.textContent = `Target Funds: ${fundraiser.TARGET_FUNDING}`;
+								targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`;
 								
 								//current funds
 								const currentP = document.createElement("p");
-								currentP.textContent = `Current Funds: ${fundraiser.CURRENT_FUNDING}`;
+								currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`;
 								
 								//active?
 								const stateP = document.createElement("p");
-								stateP.textContent = `Active?: ${fundraiser.ACTIVE}`;
+								stateP.textContent = `Active: ${fundraiser.ACTIVE === 1 ? 'true' : 'false'}`;
+								
+								//id
+								const idP = document.createElement("p");
+								idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`;
 								
 								//append in order of display
 								dataDiv.appendChild(header);
 								dataDiv.appendChild(cityP);
-								dataDiv.appendChild(catP);
 								dataDiv.appendChild(targetP);
 								dataDiv.appendChild(currentP);
+								dataDiv.appendChild(catP);
 								dataDiv.appendChild(stateP);
+								dataDiv.appendChild(idP);
 								
 								
 								
