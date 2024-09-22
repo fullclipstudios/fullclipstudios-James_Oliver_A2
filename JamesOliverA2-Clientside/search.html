@@ -40,25 +40,119 @@
 		<!-- page heading -->
 		<h1>Fundraisers For a Better World</h1>
 	</div>
-	<hr />
 	
-			<div id="content">
+	<hr/>
+	
+	<div id="content">
 		
 			<!-- Search bar block-->
 			<div class="post">
 				<h2 class="title">Search</h2>
-				<p>
-				</p>
-			</div>
+				
+				<div class="search-container">
+				
+				<!-- Search option checkbox's -->
+				<div class="checkbox-group">
+					<label for="search">Search by:</label>
+					<input type="checkbox" id="city" name="city"> City	
+					<input type="checkbox" id="organizer" name="organizer"> Organizer
+					
+					<input type="text" id="search" name="search" placeholder="Type your search here..." required>
+					<input type="button" value="Search" onclick="search()">
+				</div>
+    
+				<script>
+        // Search fundraisers by city from the search field
+        function search() {
+            const city = document.getElementById('search').value.trim(); // Get the search input and trim whitespace
+            if (!city) {
+                alert('Please enter a city to search.');
+                return; // Exit if the input is empty
+            }
 
-			
+            // Call GET API
+            fetch("http://localhost:8080/api/crowdfunding_db/" + encodeURIComponent(city))
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const dataDiv = document.getElementById('data');
+                    dataDiv.innerHTML = "";
+
+                    if (data.length > 0) {
+                        data.forEach(fundraiser => {
+                            // Header with organizer name and caption
+                            const header = document.createElement("h3");
+                            header.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
+
+                            // City
+                            const cityP = document.createElement("p");
+                            cityP.textContent = `City: ${fundraiser.CITY}`;
+
+                            // Target funds
+                            const targetP = document.createElement("p");
+                            targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`;
+
+                            // Current funds
+                            const currentP = document.createElement("p");
+                            currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`;
+
+                            // Active?
+                            const stateP = document.createElement("p");
+                            stateP.textContent = `Active: ${fundraiser.ACTIVE === 1 ? 'Yes' : 'Currently Not Active'}`;
+
+                            // ID
+                            const idP = document.createElement("p");
+                            idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`;
+
+                            // Append in order of display
+                            dataDiv.appendChild(header);
+                            dataDiv.appendChild(cityP);
+                            dataDiv.appendChild(targetP);
+                            dataDiv.appendChild(currentP);
+                            dataDiv.appendChild(stateP);
+                            dataDiv.appendChild(idP);
+                        });
+                    } else {
+                        dataDiv.textContent = "No fundraiser data available.";
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching data:", error);
+                    document.getElementById('data').textContent = "Failed to load data: " + error.message;
+                });
+        }
+    </script>
 	
 	</div>
+			
+			
+	</div>
 	
+		
+
+		
 	
+<div style="clear: both;">&nbsp;</div>
 	
-	<!-- footer text-->
-	<footer>
+</div>
+
+
+<!-- footer text -->
+<div style="clear: both;">&nbsp;</div>
+<footer>
 		<p>Copyright (c) 2024. All rights reserved. Design by James Oliver</p>
-	</footer>
+</footer>
+
+
+
+</body>
+</html>
+
+</html>
+			
+	
 	

@@ -36,4 +36,4 @@ INSERT INTO CATEGORY (NAME) VALUES
 
 use crowdfunding_db;
 SELECT * FROM fundraiser;
-truncate fundraiser;
+truncate category;

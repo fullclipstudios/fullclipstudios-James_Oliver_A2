@@ -31,8 +31,8 @@ router.get("/",(req,res) =>{
 
 
 //get data from categories table
-router.get("/categories",(req,res) =>{
-	connection.query("SELECT * FROM categories", (err, records, fields) =>{
+router.get("/",(req,res) =>{
+	connection.query("SELECT * FROM category", (err, records, fields) =>{
 		if (err){
 			console.log("Error retrieving data from categories table");
 			return;
@@ -41,6 +41,12 @@ router.get("/categories",(req,res) =>{
 		console.log(records);
 		
 	});
+});
+
+router.get("/:city", (req, res) => {
+    const city = req.params.city;
+    const results = fundraisers.filter(f => f.CITY.toLowerCase() === city.toLowerCase());
+    res.json(results);
 });
 
 

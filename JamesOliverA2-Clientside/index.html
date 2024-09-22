@@ -69,73 +69,152 @@ Released   : 2024
 			<div id = "data" class= "post">
 				<h2 class="title">Active Fundraisers</h2>
 				
-					<script>
-						//call GET API 
+				<script>
+				
+				
+					//loads and displays all data from the database on the page
+					function loadAll()
+					{
+						// Call GET API 
 						fetch("http://localhost:8080/api/crowdfunding_db")
-						  .then(response => response.json())
-						  .then(data => {
-							
-							const dataDiv=document.getElementById('data');
-							dataDiv.innerHTML="";
+						.then(response => response.json())
+						.then(data => 
+							{
+								const dataDiv = document.getElementById('data');
+								dataDiv.innerHTML = "";
 
-							if(data.length>0){
-							  data.forEach( fundraiser => {
-								
-								// header with organizer name and the caption
-								const header = document.createElement("h3");
-								header.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION} `;
-								
-								//city
-								const cityP = document.createElement("p");
-								cityP.textContent = `City: ${fundraiser.CITY}`;
-								
-								//category
-								const catP = document.createElement("p");
-								catP.textContent = `Category: ${fundraiser.CATEGORY_ID}`;
-								
-								//target funds
-								const targetP = document.createElement("p");
-								targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`;
-								
-								//current funds
-								const currentP = document.createElement("p");
-								currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`;
-								
-								//active?
-								const stateP = document.createElement("p");
-								stateP.textContent = `Active: ${fundraiser.ACTIVE === 1 ? 'true' : 'false'}`;
-								
-								//id
-								const idP = document.createElement("p");
-								idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`;
-								
-								//append in order of display
-								dataDiv.appendChild(header);
-								dataDiv.appendChild(cityP);
-								dataDiv.appendChild(targetP);
-								dataDiv.appendChild(currentP);
-								dataDiv.appendChild(catP);
-								dataDiv.appendChild(stateP);
-								dataDiv.appendChild(idP);
-								
-								
-								
-							  });
+								if (data.length > 0) 
+								{
+									data.forEach(fundraiser => 
+									{
+										// Header with organizer name and the caption
+										const header = document.createElement("h3");
+										header.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
 
-							}
-							else{
-							  dataDiv.textContent="No concert data";
-							}
-						  })
-						  .catch(error=>{
-							console.error("Error fecthing data",error);
-							document.getElementById('data').textContent="Failed to load data";
-						  });
+										// City
+										const cityP = document.createElement("p");
+										cityP.textContent = `City: ${fundraiser.CITY}`; 
 
+										// Target funds
+										const targetP = document.createElement("p");
+										targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`; 
+										// Current funds
+										const currentP = document.createElement("p");
+										currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`; 
+
+										// Active?
+										const stateP = document.createElement("p");
+										stateP.textContent = `Active: ${fundraiser.ACTIVE === 1 ? 'Yes' : 'Currently Not Active'}`; 
+
+										// ID
+										const idP = document.createElement("p");
+										idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`; 
+										
+										<!-- // Category Name
+									   // const categoryNameP = document.createElement("p");
+										//categoryNameP.textContent = `Category Name: ${category.NAME}`;  -->
+
+										// Append in order of display
+										dataDiv.appendChild(header);
+										dataDiv.appendChild(cityP);
+										dataDiv.appendChild(targetP);
+										dataDiv.appendChild(currentP);
+										dataDiv.appendChild(stateP);
+										dataDiv.appendChild(idP);
+										//dataDiv.appendChild(categoryNameP); // Display category name
+									});
+								} 
+								else 
+								{
+									dataDiv.textContent = "No fundraiser data available.";
+								}
+							})
+							.catch(error => {
+								console.error("Error fetching data", error);
+								document.getElementById('data').textContent = "Failed to load data";
+							});
+					}
+	
+					//load "loadAll" function on page load
+					document.addEventListener('DOMContentLoaded', loadAll);
+					
+					
+					//search
+					
+					function search()
+					{
+						// Call GET API 
+						fetch("http://localhost:8080/api/crowdfunding_db")
+						.then(response => response.json())
+						.then(data => 
+							{
+								const dataDiv = document.getElementById('data');
+								dataDiv.innerHTML = "";
+
+								if (data.length > 0) 
+								{
+									data.forEach(fundraiser => 
+									{
+										// Header with organizer name and the caption
+										const header = document.createElement("h3");
+										header.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
+
+										// City
+										const cityP = document.createElement("p");
+										cityP.textContent = `City: ${fundraiser.CITY}`; 
+
+										// Target funds
+										const targetP = document.createElement("p");
+										targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`; 
+										// Current funds
+										const currentP = document.createElement("p");
+										currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`; 
+
+										// Active?
+										const stateP = document.createElement("p");
+										stateP.textContent = `Active: ${fundraiser.ACTIVE === 1 ? 'Yes' : 'Currently Not Active'}`; 
+
+										// ID
+										const idP = document.createElement("p");
+										idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`; 
+										
+										<!-- // Category Name
+									   // const categoryNameP = document.createElement("p");
+										//categoryNameP.textContent = `Category Name: ${category.NAME}`;  -->
+
+										// Append in order of display
+										dataDiv.appendChild(header);
+										dataDiv.appendChild(cityP);
+										dataDiv.appendChild(targetP);
+										dataDiv.appendChild(currentP);
+										dataDiv.appendChild(stateP);
+										dataDiv.appendChild(idP);
+										//dataDiv.appendChild(categoryNameP); // Display category name
+									});
+								} 
+								else 
+								{
+									dataDiv.textContent = "No fundraiser data available.";
+								}
+							})
+							.catch(error => {
+								console.error("Error fetching data", error);
+								document.getElementById('data').textContent = "Failed to load data";
+							});
+					}
+					
+				
 					  </script>
 				
 			</div>
 			
+				<p>
+									
+					<input type="text" id="textID" name="search" placeholder="Type your search here..." required>
+					<input type="button" value="Search" onclick="search()">
+				</p>
+					
+					
 			<!-- success stories block-->
 			<div class="post">
 				<h2 class="title">Success stories</h2>
@@ -156,7 +235,6 @@ Released   : 2024
 				<p>  Please feel free to contact us at any time regarding your fundraiser.</p>
 				<p>contact@betterworld.com.au</p>
 			</div>
-			
 			
 
 			
