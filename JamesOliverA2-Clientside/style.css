@@ -298,3 +298,39 @@ h3 {
 	color:white;
 	text-align: left;
 }
+
+.checkbox-group {
+    display: flex; /* Use flexbox for horizontal layout */
+    gap: 15px; /* Space between checkbox items */
+    margin-bottom: 10px; /* Space below the checkbox group */
+}
+
+.checkbox-item {
+    border: 1px solid #ccc; /* Border for each checkbox item */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Inner padding */
+    width: 520px; /* Fixed width for each item */
+    text-align: center; /* Center the text */
+}
+
+input[type="text"] {
+    display: block; /* Make the search input a block element */
+    margin-top: 10px; /* Space above the text input */
+    width: calc(100% - 22px); /* Full width minus padding/border */
+}
+
+input[type="button"] {
+    display: block; /* Make the button a block element */
+    margin-top: 10px; /* Space above the button */
+}
+
+ .postSearch {
+            display: none; /* Initially hidden */
+			margin-bottom: 3%;
+	clear:both;
+	width: 100%;
+	background-color:#242424;
+	padding:0 20px 10px 10px;
+	border: 3px solid black;
+	border-radius:5px;
+        }

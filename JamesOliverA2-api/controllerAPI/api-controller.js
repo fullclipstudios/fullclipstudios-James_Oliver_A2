@@ -30,23 +30,27 @@ router.get("/",(req,res) =>{
 });
 
 
-//get data from categories table
-router.get("/",(req,res) =>{
-	connection.query("SELECT * FROM category", (err, records, fields) =>{
-		if (err){
-			console.log("Error retrieving data from categories table");
-			return;
-		}
-		res.send(records);
-		console.log(records);
-		
-	});
-});
 
+
+// Get all data from the fundraiser table by city
 router.get("/:city", (req, res) => {
-    const city = req.params.city;
-    const results = fundraisers.filter(f => f.CITY.toLowerCase() === city.toLowerCase());
-    res.json(results);
+    const city = req.params.city; // Get the city from the URL parameter
+
+    // Use parameterized query to prevent SQL injection
+    const query = "SELECT * FROM fundraiser WHERE CITY = ?";
+    connection.query(query, [city], (err, records) => {
+        if (err) {
+            console.error("Error while retrieving data:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        // If no records are found, respond with an empty array
+        if (records.length === 0) {
+            return res.status(404).json({ message: "No fundraisers found for this city" });
+        }
+
+        res.json(records); // Send records as JSON
+    });
 });
 
 
