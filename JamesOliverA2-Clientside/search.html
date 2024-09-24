@@ -63,18 +63,25 @@
 						<label for="city">City</label>
 					</div>
 					<div class="checkbox-item">
-						<input type="checkbox" id="organizer1" name="organizer"> 
-						<label for="organizer1">Organizer</label>
+						<input type="checkbox" id="organizer" name="organizer"> 
+						<label for="organizer">Organizer</label>
 					</div>
 					<div class="checkbox-item">
-						<input type="checkbox" id="category" name="category"> 
-						<label for="category">Category</label>
+						 <label for="category">Category:</label>
+					<select id="category" name="category">
+						<option value="">--Please choose an option--</option>
+						<option value="Community">Community</option>
+						<option value="Arts">Arts</option>
+						<option value="Environment">Environment</option>
+						<option value="Health">Health</option>
+						<option value="Animal welfare">Animal Welfare</option>
+					</select>
 					</div>
 					
 					
-					<!-- Search box -->
+					<!-- Search box and button-->
 					<input type="text" id="search" name="search" placeholder="Type your search here..." required>
-					<input type="button" value="Search" onclick="search()">
+					<input type="button" value="Search" onclick="searchCheck()">
 					
 					<!-- Clear button -->
 					<input type="button" value="clear filters" onclick="clearFilters()">
@@ -85,7 +92,9 @@
 		<!-- results of search box -->
 		<div class="postSearch" style="display: none;">
 			<!-- Your search results go here -->
-			<p>Search results will be displayed here.</p>
+			<h2 class="title">Search Results</h2>
+			<div id="results">
+			</div>
 		</div>	
 	</div>
 	
@@ -101,51 +110,100 @@
 			
     
 <script>
-			// Search fundraisers by city from the search field
-			function search() 
-			{
-			
-				
-			
-			
-				const cityChecked = document.getElementById("city").checked;
-				const organizerChecked = document.getElementById("organizer1").checked;
-				const categoryChecked = document.getElementById("category").checked;
-				
-				const searchTerm = document.getElementById('search').value.trim(); 
+					function searchCheck() 
+					{
+							const cityChecked = document.getElementById("city").checked;
+							const orgChecked = document.getElementById("organizer").checked; 
+							const searchTerm = document.getElementById('search').value.trim(); 
+							const catSelect = document.getElementById("category").value; 
 
-				if (!cityChecked && !organizerChecked && !categoryChecked)
-				{
-					alert("Please select at a minimum of one search criteria .");
-					return;
-				}
+							// Check if the search term is empty
+							if (searchTerm === "")
+							{
+								alert("Please enter a search term");
+								return; 
+							}
+
+							
+							if (cityChecked) 
+							{
+								showFundraisersByCity(searchTerm);
+							}
+
+							
+							if (cityChecked && orgChecked && catSelect === "") 
+							{
+								alert("Please select a category filter");
+								return; 
+							}
+
+						}
+
+
 			
+		function showFundraisersByCity(city) {
+        const postDiv = document.querySelector('.postSearch');
+        postDiv.style.display = 'block'; 
+        const dataDiv = document.getElementById('results');
+        dataDiv.innerHTML = ""; // Clear previous results
+
+        fetch(`http://localhost:8080/api/crowdfunding_db/${encodeURIComponent(city)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (Array.isArray(data) && data.length > 0) {
+                    data.forEach(fundraiser => {
+                        const header = document.createElement("h3");
+                        header.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
+
+                        const cityP = document.createElement("p");
+                        cityP.textContent = `City: ${fundraiser.CITY}`;
+
+                        const targetP = document.createElement("p");
+                        targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`;
+
+                        const currentP = document.createElement("p");
+                        currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`;
+
+                        const stateP = document.createElement("p");
+                        stateP.textContent = `Active: ${fundraiser.ACTIVE === 1 ? 'Yes' : 'Currently Not Active'}`;
+
+                        const idP = document.createElement("p");
+                        idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`;
+
+                        // Append in order of display
+                        dataDiv.appendChild(header);
+                        dataDiv.appendChild(cityP);
+                        dataDiv.appendChild(targetP);
+                        dataDiv.appendChild(currentP);
+                        dataDiv.appendChild(stateP);
+                        dataDiv.appendChild(idP);
+                    });
+                } else {
+                    dataDiv.textContent = "No fundraisers available for this city.";
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+                dataDiv.textContent = "Failed to load data.";
+            });
+    }
+
+    function clearFilters() {
+        const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = false;
+        });
+        document.getElementById("category").value = "";
+        document.getElementById("search").value = ""; // Clear the search input
+        document.querySelector('.postSearch').style.display = 'none'; // Hide results
+        document.getElementById('results').innerHTML = ""; // Clear results
+    }
 				
-				if (!searchTerm)
-					{
-						alert('Please enter search term in search field');
-						return; 
-					}
-					
-				else
-					{
-						//generate results field
-						const postDiv = document.querySelector('.postSearch');
-						postDiv.style.display = 'block'; // Show the div
-					}
-			}
-				
-			
-			
-			function clearFilters()
-				{
-					// Uncheck all checkboxes
-					const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
-					checkboxes.forEach(checkbox =>
-						{
-							checkbox.checked = false;
-						});
-				}
 			
 </script>
 	
