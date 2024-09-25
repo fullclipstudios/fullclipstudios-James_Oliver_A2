@@ -68,13 +68,13 @@
 					</div>
 					<div class="checkbox-item">
 						 <label for="category">Category:</label>
-					<select id="category" name="category">
+					<select id="category" name="category" onchange = "categorySelection(this.value)">
 						<option value="">--Please choose an option--</option>
-						<option value="Community">Community</option>
-						<option value="Arts">Arts</option>
-						<option value="Environment">Environment</option>
-						<option value="Health">Health</option>
-						<option value="Animal welfare">Animal Welfare</option>
+						<option value="1">Community</option>
+						<option value="2">Arts</option>
+						<option value="3">Environment</option>
+						<option value="4">Health</option>
+						<option value="5">Animal Welfare</option>
 					</select>
 					</div>
 					
@@ -117,21 +117,36 @@
 							const searchTerm = document.getElementById('search').value.trim(); 
 							const catSelect = document.getElementById("category").value; 
 
-							// Check if the search term is empty
-							if (searchTerm === "")
+							
+							if ((cityChecked || orgChecked) && searchTerm === "")
 							{
-								alert("Please enter a search term");
+								alert("Please enter a search term ");
 								return; 
 							}
+
+							
+							if (searchTerm === "" && !cityChecked && !orgChecked && catSelect === "") 
+							{
+								alert("Please enter a search term or select a filter");
+								return; 
+							}
+													
+							
 
 							
 							if (cityChecked) 
 							{
 								showFundraisersByCity(searchTerm);
 							}
-
 							
-							if (cityChecked && orgChecked && catSelect === "") 
+							if(orgChecked)
+							{
+								showFundraisersByOrg(searchTerm);
+							}
+							
+							
+							
+							if (!cityChecked && !orgChecked && catSelect === "") 
 							{
 								alert("Please select a category filter");
 								return; 
@@ -140,69 +155,238 @@
 						}
 
 
-			
-		function showFundraisersByCity(city) {
-        const postDiv = document.querySelector('.postSearch');
-        postDiv.style.display = 'block'; 
-        const dataDiv = document.getElementById('results');
-        dataDiv.innerHTML = ""; // Clear previous results
+					//show fundraisers when city checkbox is selected, and match with search term
+					function showFundraisersByCity(city)
+					{
+						const postDiv = document.querySelector('.postSearch');
+						postDiv.style.display = 'block'; 
+						const dataDiv = document.getElementById('results');
+						dataDiv.innerHTML = ""; // Clear previous results
 
-        fetch(`http://localhost:8080/api/crowdfunding_db/${encodeURIComponent(city)}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (Array.isArray(data) && data.length > 0) {
-                    data.forEach(fundraiser => {
-                        const header = document.createElement("h3");
-                        header.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
+						fetch(`http://localhost:8080/api/crowdfunding_db/city/${encodeURIComponent(city)}`)
+							.then(response => {
+								console.log("Response:", response);
+								return response.json();
+							})
+							.then(data => {
+								if (Array.isArray(data) && data.length > 0) {
+									data.forEach(fundraiser => {
+										const header = document.createElement("h3");
 
-                        const cityP = document.createElement("p");
-                        cityP.textContent = `City: ${fundraiser.CITY}`;
+										// Create a hyperlink to/fundraiser page
+										const link = document.createElement("a");
+										link.href = `http://localhost:3060/fundraiser`; 
+										link.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
+										link.target = "_blank"; 
+										link.style.color = 'inherit';
 
-                        const targetP = document.createElement("p");
-                        targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`;
+										// Append link to header
+										header.appendChild(link);
+										dataDiv.appendChild(header);
 
-                        const currentP = document.createElement("p");
-                        currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`;
+										const cityP = document.createElement("p");
+										cityP.textContent = `City: ${fundraiser.CITY}`;
+										
+										const targetP = document.createElement("p");
+										targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`;
 
-                        const stateP = document.createElement("p");
-                        stateP.textContent = `Active: ${fundraiser.ACTIVE === 1 ? 'Yes' : 'Currently Not Active'}`;
+										const currentP = document.createElement("p");
+										currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`;
 
-                        const idP = document.createElement("p");
-                        idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`;
+										const stateP = document.createElement("p");
+										stateP.textContent = `Active: ${fundraiser.ACTIVE === 1 ? 'Yes' : 'Currently Not Active'}`;
 
-                        // Append in order of display
-                        dataDiv.appendChild(header);
-                        dataDiv.appendChild(cityP);
-                        dataDiv.appendChild(targetP);
-                        dataDiv.appendChild(currentP);
-                        dataDiv.appendChild(stateP);
-                        dataDiv.appendChild(idP);
-                    });
-                } else {
-                    dataDiv.textContent = "No fundraisers available for this city.";
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-                dataDiv.textContent = "Failed to load data.";
-            });
-    }
+										const idP = document.createElement("p");
+										idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`;
 
-    function clearFilters() {
-        const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = false;
-        });
-        document.getElementById("category").value = "";
-        document.getElementById("search").value = ""; // Clear the search input
-        document.querySelector('.postSearch').style.display = 'none'; // Hide results
-        document.getElementById('results').innerHTML = ""; // Clear results
-    }
+										// Append in order of display
+										dataDiv.appendChild(header);
+										dataDiv.appendChild(cityP);
+										dataDiv.appendChild(targetP);
+										dataDiv.appendChild(currentP);
+										dataDiv.appendChild(stateP);
+										dataDiv.appendChild(idP);
+									});
+								} else {
+									//error message in red bold
+									const noFundraisersMessage = document.createElement("p");
+									noFundraisersMessage.textContent = "No fundraisers available for this city.";
+									noFundraisersMessage.classList.add("no-fundraisers"); 
+									dataDiv.innerHTML = ""; 
+									dataDiv.appendChild(noFundraisersMessage); 
+								}
+							})
+							.catch(error => {
+								console.error("Error fetching data:", error);
+								dataDiv.textContent = "Failed to load data.";
+							});
+					}
+						
+					
+					//show fundraisers when org checkbox is selected, and match with search term
+					function showFundraisersByOrg(org) {
+							const postDiv = document.querySelector('.postSearch');
+							postDiv.style.display = 'block'; 
+							const dataDiv = document.getElementById('results');
+							dataDiv.innerHTML = ""; // Clear previous results
+
+							fetch(`http://localhost:8080/api/crowdfunding_db/organizer/${encodeURIComponent(org)}`)
+								.then(response => {
+							console.log("Response:", response);
+							return response.json();
+								})
+								.then(data => {
+									if (Array.isArray(data) && data.length > 0) {
+										data.forEach(fundraiser => {
+											const header = document.createElement("h3");
+											
+											// Create hyperlink
+											const link = document.createElement("a");
+											link.href = `http://localhost:3060/fundraiser`; 
+											link.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
+											link.target = "_blank"; 
+											link.style.color = 'inherit';
+
+											// Append link to header
+											header.appendChild(link);
+											dataDiv.appendChild(header);
+
+											const cityP = document.createElement("p");
+											cityP.textContent = `City: ${fundraiser.CITY}`;
+
+											const targetP = document.createElement("p");
+											targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`;
+
+											const currentP = document.createElement("p");
+											currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`;
+
+											const stateP = document.createElement("p");
+											stateP.textContent = `Active: ${fundraiser.ACTIVE === 1 ? 'Yes' : 'Currently Not Active'}`;
+
+											const idP = document.createElement("p");
+											idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`;
+
+											// Append in order of display
+											dataDiv.appendChild(header);
+											dataDiv.appendChild(cityP);
+											dataDiv.appendChild(targetP);
+											dataDiv.appendChild(currentP);
+											dataDiv.appendChild(stateP);
+											dataDiv.appendChild(idP);
+										});
+									} else {
+									
+										//error message in red bold
+										const noFundraisersMessage = document.createElement("p");
+										//error message
+										noFundraisersMessage.textContent = "No fundraisers available by this organizer.";
+										
+										//css reference
+										noFundraisersMessage.classList.add("no-fundraisers"); 
+										
+										dataDiv.innerHTML = ""; 
+										dataDiv.appendChild(noFundraisersMessage); 
+									}
+								})
+								.catch(error => {
+									console.error("Error fetching data:", error);
+									dataDiv.textContent = "Failed to load data.";
+								});
+						}
+						
+						
+					function categorySelection(selectedCat)
+					{
+						if (selectedCat)
+						{
+							showFundraisersByCat(selectedCat);
+						}
+					}
+					
+					//show fundraisers when a dropdown category has been selected, and match with search term
+					function showFundraisersByCat(cat) {
+							const postDiv = document.querySelector('.postSearch');
+							postDiv.style.display = 'block'; 
+							const dataDiv = document.getElementById('results');
+							dataDiv.innerHTML = ""; // Clear previous results
+
+							fetch(`http://localhost:8080/api/crowdfunding_db/category/${encodeURIComponent(cat)}`)
+								.then(response => {
+							console.log("Response:", response);
+							return response.json();
+								})
+								.then(data => {
+									if (Array.isArray(data) && data.length > 0) {
+										data.forEach(fundraiser => {
+											const header = document.createElement("h3");
+											
+											// Create hyperlink
+											const link = document.createElement("a");
+											link.href = `http://localhost:3060/fundraiser`; 
+											link.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
+											link.target = "_blank"; 
+											link.style.color = 'inherit';
+
+											// Append link to header
+											header.appendChild(link);
+											dataDiv.appendChild(header);
+
+											const cityP = document.createElement("p");
+											cityP.textContent = `City: ${fundraiser.CITY}`;
+
+											const targetP = document.createElement("p");
+											targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`;
+
+											const currentP = document.createElement("p");
+											currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`;
+
+											const stateP = document.createElement("p");
+											stateP.textContent = `Active: ${fundraiser.ACTIVE === 1 ? 'Yes' : 'Currently Not Active'}`;
+
+											const idP = document.createElement("p");
+											idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`;
+
+											// Append in order of display
+											dataDiv.appendChild(header);
+											dataDiv.appendChild(cityP);
+											dataDiv.appendChild(targetP);
+											dataDiv.appendChild(currentP);
+											dataDiv.appendChild(stateP);
+											dataDiv.appendChild(idP);
+										});
+									} else {
+									
+										//error message in red bold
+										const noFundraisersMessage = document.createElement("p");
+										//error message
+										noFundraisersMessage.textContent = "No fundraisers in this category.";
+										
+										//css reference
+										noFundraisersMessage.classList.add("no-fundraisers"); 
+										
+										dataDiv.innerHTML = ""; 
+										dataDiv.appendChild(noFundraisersMessage); 
+									}
+								})
+								.catch(error => {
+									console.error("Error fetching data:", error);
+									dataDiv.textContent = "Failed to load data.";
+								});
+						}
+						
+						
+					//clears check box's
+					function clearFilters()
+					{
+							const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+							checkboxes.forEach(checkbox => {
+								checkbox.checked = false;
+							});
+							document.getElementById("category").value = "";
+							document.getElementById("search").value = ""; // Clear the search input
+							document.querySelector('.postSearch').style.display = 'none'; // Hide results
+							document.getElementById('results').innerHTML = ""; // Clear results
+					}
 				
 			
 </script>
