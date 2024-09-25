@@ -1,15 +1,20 @@
 <!DOCTYPE html>
+<!--
+Design: James Oliver
+Name       : James' assessment 2 webpage - search
+Description: A two-column, fixed-width design for 1024x768 screen resolutions.
+Version    : 1.0
+Released   : 2024
+-->
 
 
-<!-- langauge set -->
-<html lang="en">
+<html>
 
 <head>
-	<!-- font size set -->
-	<meta charset="utf-8">
 	
-	<!-- tab text set -->
-	<title>Search - Fundraisers For a Better World</title>
+	
+	<!-- tab text -->
+	<title>Search - Fundraisers For A Better World</title>
 
 	<!-- style sheet link  -->
 	<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
@@ -41,7 +46,7 @@
 		<h1>Fundraisers For a Better World</h1>
 	</div>
 	
-	<hr/>
+	
 	
 	<div id="content">
 		
@@ -110,49 +115,48 @@
 			
     
 <script>
+					//search box and selection box logic
 					function searchCheck() 
 					{
-							const cityChecked = document.getElementById("city").checked;
-							const orgChecked = document.getElementById("organizer").checked; 
-							const searchTerm = document.getElementById('search').value.trim(); 
-							const catSelect = document.getElementById("category").value; 
+						const cityChecked = document.getElementById("city").checked;
+						const orgChecked = document.getElementById("organizer").checked; 
+						const searchTerm = document.getElementById('search').value.trim(); 
+						const catSelect = document.getElementById("category").value; 
 
 							
-							if ((cityChecked || orgChecked) && searchTerm === "")
-							{
-								alert("Please enter a search term ");
-								return; 
-							}
-
-							
-							if (searchTerm === "" && !cityChecked && !orgChecked && catSelect === "") 
-							{
-								alert("Please enter a search term or select a filter");
-								return; 
-							}
-													
-							
-
-							
-							if (cityChecked) 
-							{
-								showFundraisersByCity(searchTerm);
-							}
-							
-							if(orgChecked)
-							{
-								showFundraisersByOrg(searchTerm);
-							}
-							
-							
-							
-							if (!cityChecked && !orgChecked && catSelect === "") 
-							{
-								alert("Please select a category filter");
-								return; 
-							}
-
+						if ((cityChecked || orgChecked) && searchTerm === "")
+						{
+							alert("Please enter a search term ");
+							return; 
 						}
+
+							
+						if (searchTerm === "" && !cityChecked && !orgChecked && catSelect === "") 
+						{
+							alert("Please enter a search term or select a filter");
+							return; 
+						}
+
+	
+						if (cityChecked) 
+						{
+							showFundraisersByCity(searchTerm);
+						}
+							
+							
+						if(orgChecked)
+						{
+							showFundraisersByOrg(searchTerm);
+						}
+
+
+						if (!cityChecked && !orgChecked && catSelect === "") 
+						{
+							alert("Please select a category filter");
+							return; 
+						}
+
+					}
 
 
 					//show fundraisers when city checkbox is selected, and match with search term
@@ -161,7 +165,7 @@
 						const postDiv = document.querySelector('.postSearch');
 						postDiv.style.display = 'block'; 
 						const dataDiv = document.getElementById('results');
-						dataDiv.innerHTML = ""; // Clear previous results
+						dataDiv.innerHTML = ""; 
 
 						fetch(`http://localhost:8080/api/crowdfunding_db/city/${encodeURIComponent(city)}`)
 							.then(response => {
@@ -169,13 +173,17 @@
 								return response.json();
 							})
 							.then(data => {
-								if (Array.isArray(data) && data.length > 0) {
-									data.forEach(fundraiser => {
+								if (Array.isArray(data) && data.length > 0) 
+								{
+									data.forEach(fundraiser => 
+									{
 										const header = document.createElement("h3");
 
 										// Create a hyperlink to/fundraiser page
 										const link = document.createElement("a");
-										link.href = `http://localhost:3060/fundraiser`; 
+					
+										//link to new page passing the id into the URL
+										link.href = `http://localhost:3060/fundraiser.html?id=${fundraiser.FUNDRAISER_ID}`;
 										link.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
 										link.target = "_blank"; 
 										link.style.color = 'inherit';
@@ -206,6 +214,11 @@
 										dataDiv.appendChild(currentP);
 										dataDiv.appendChild(stateP);
 										dataDiv.appendChild(idP);
+										
+										//line break
+										const hr = document.createElement("hr");
+										dataDiv.appendChild(hr);
+										
 									});
 								} else {
 									//error message in red bold
@@ -224,25 +237,31 @@
 						
 					
 					//show fundraisers when org checkbox is selected, and match with search term
-					function showFundraisersByOrg(org) {
-							const postDiv = document.querySelector('.postSearch');
-							postDiv.style.display = 'block'; 
-							const dataDiv = document.getElementById('results');
-							dataDiv.innerHTML = ""; // Clear previous results
+					function showFundraisersByOrg(org) 
+					{
+						const postDiv = document.querySelector('.postSearch');
+						postDiv.style.display = 'block'; 
+						const dataDiv = document.getElementById('results');
+						dataDiv.innerHTML = ""; 
 
-							fetch(`http://localhost:8080/api/crowdfunding_db/organizer/${encodeURIComponent(org)}`)
-								.then(response => {
-							console.log("Response:", response);
-							return response.json();
+						fetch(`http://localhost:8080/api/crowdfunding_db/organizer/${encodeURIComponent(org)}`)
+								.then(response => 
+								{
+									console.log("Response:", response);
+									return response.json();
 								})
-								.then(data => {
-									if (Array.isArray(data) && data.length > 0) {
-										data.forEach(fundraiser => {
+								.then(data => 
+								{
+									if (Array.isArray(data) && data.length > 0) 
+									{
+										data.forEach(fundraiser => 
+										{
 											const header = document.createElement("h3");
 											
 											// Create hyperlink
 											const link = document.createElement("a");
-											link.href = `http://localhost:3060/fundraiser`; 
+											//link to new page passing the id into the URL
+											link.href = `http://localhost:3060/fundraiser.html?id=${fundraiser.FUNDRAISER_ID}`;
 											link.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
 											link.target = "_blank"; 
 											link.style.color = 'inherit';
@@ -273,9 +292,15 @@
 											dataDiv.appendChild(currentP);
 											dataDiv.appendChild(stateP);
 											dataDiv.appendChild(idP);
+											
+											//line break
+											const hr = document.createElement("hr");
+											dataDiv.appendChild(hr);
+										
 										});
-									} else {
-									
+									} 
+									else 
+									{
 										//error message in red bold
 										const noFundraisersMessage = document.createElement("p");
 										//error message
@@ -288,13 +313,14 @@
 										dataDiv.appendChild(noFundraisersMessage); 
 									}
 								})
-								.catch(error => {
+								.catch(error => 
+								{
 									console.error("Error fetching data:", error);
 									dataDiv.textContent = "Failed to load data.";
 								});
 						}
 						
-						
+					//passes selection categorty into show Category function	
 					function categorySelection(selectedCat)
 					{
 						if (selectedCat)
@@ -303,29 +329,36 @@
 						}
 					}
 					
+					
 					//show fundraisers when a dropdown category has been selected, and match with search term
-					function showFundraisersByCat(cat) {
-							const postDiv = document.querySelector('.postSearch');
-							postDiv.style.display = 'block'; 
-							const dataDiv = document.getElementById('results');
-							dataDiv.innerHTML = ""; // Clear previous results
+					function showFundraisersByCat(cat) 
+					{
+						const postDiv = document.querySelector('.postSearch');
+						postDiv.style.display = 'block'; 
+						const dataDiv = document.getElementById('results');
+						dataDiv.innerHTML = ""; 
 
-							fetch(`http://localhost:8080/api/crowdfunding_db/category/${encodeURIComponent(cat)}`)
-								.then(response => {
-							console.log("Response:", response);
-							return response.json();
+						fetch(`http://localhost:8080/api/crowdfunding_db/category/${encodeURIComponent(cat)}`)
+								.then(response => 
+								{
+									console.log("Response:", response);
+									return response.json();
 								})
-								.then(data => {
-									if (Array.isArray(data) && data.length > 0) {
-										data.forEach(fundraiser => {
+								.then(data => 
+								{
+									if (Array.isArray(data) && data.length > 0) 
+									{
+										data.forEach(fundraiser => 
+										{
 											const header = document.createElement("h3");
-											
+
 											// Create hyperlink
 											const link = document.createElement("a");
-											link.href = `http://localhost:3060/fundraiser`; 
-											link.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
+											//link to new page passing the id into the URL
+											link.href = `http://localhost:3060/fundraiser.html?id=${fundraiser.FUNDRAISER_ID}`;
 											link.target = "_blank"; 
 											link.style.color = 'inherit';
+											link.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`; 
 
 											// Append link to header
 											header.appendChild(link);
@@ -353,9 +386,14 @@
 											dataDiv.appendChild(currentP);
 											dataDiv.appendChild(stateP);
 											dataDiv.appendChild(idP);
+											
+											//line break
+											const hr = document.createElement("hr");
+											dataDiv.appendChild(hr);
 										});
-									} else {
-									
+									} 
+									else 
+									{
 										//error message in red bold
 										const noFundraisersMessage = document.createElement("p");
 										//error message
@@ -368,7 +406,8 @@
 										dataDiv.appendChild(noFundraisersMessage); 
 									}
 								})
-								.catch(error => {
+								.catch(error => 
+								{
 									console.error("Error fetching data:", error);
 									dataDiv.textContent = "Failed to load data.";
 								});
@@ -379,7 +418,8 @@
 					function clearFilters()
 					{
 							const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
-							checkboxes.forEach(checkbox => {
+							checkboxes.forEach(checkbox => 
+							{
 								checkbox.checked = false;
 							});
 							document.getElementById("category").value = "";
@@ -390,9 +430,6 @@
 				
 			
 </script>
-	
-	
-
 
 <!-- footer text -->
 <div style="clear: both;">&nbsp;</div>

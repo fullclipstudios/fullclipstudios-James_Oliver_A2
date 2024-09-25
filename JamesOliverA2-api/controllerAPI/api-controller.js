@@ -120,7 +120,25 @@ router.get("/organizer/:org", (req, res) => {
 		});
 
 	
+//API to get id
+router.get("/ID/:id", (req, res) => {
+    const org= req.params.id; 
+    const query = `SELECT * FROM fundraiser WHERE FUNDRAISER_ID = '${org}' AND ACTIVE =1`; 
+	//handle errors
+    connection.query(query, (err, records) => {
+        if (err) {
+            console.error("Error while retrieving the data:", err);
+           
+        }
+		//show message if no matches
 
+        if (records.length === 0) {
+            return res.json({ message: "No active fundraisers with this ID" });
+        }
+
+        res.json(records); 
+    });
+});
 
 
 

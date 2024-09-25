@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <!--
 Design: James Oliver
-Name       : James' assessment 2 webpage - fundraisers
+Name       : James' assessment 2 webpage - fundraisers home
 Description: A two-column, fixed-width design for 1024x768 screen resolutions.
 Version    : 1.0
 Released   : 2024
 -->
 
-<!-- language set -->
-<html lang="en">
+<html>
 
 <head>
-	<!-- font size set -->
-	<meta charset="utf-8">
 	
-	<!-- tab text set-->
-	<title>Fundraisers For a Better World</title>
+	
+	<!-- tab text-->
+	<title>Fundraisers For A Better World</title>
 	
 	<!-- style sheet link -->
 	<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
@@ -53,7 +51,7 @@ Released   : 2024
 	<!-- page heading -->
 		<h1>Fundraisers for A Better World</h1>
 	</div>
-	<hr />
+
 
 	
 	<div id="content">
@@ -75,60 +73,70 @@ Released   : 2024
 				
 				
 					
-					function loadActive() {
-    // Call GET api to show all fundraisers that are active
-    fetch("http://localhost:8080/api/crowdfunding_db/")
-        .then(response => {
-            console.log("Response:", response);
-            return response.json();
-        })
-        .then(data => {
-            console.log("Data:", data);
-            const dataDiv = document.getElementById('data');
-            
-            const title = dataDiv.querySelector('.title'); 
-            dataDiv.innerHTML = ""; 
-            dataDiv.appendChild(title); 
+					function loadActive() 
+					{
+					// Call GET api to show all fundraisers that are active
+					fetch("http://localhost:8080/api/crowdfunding_db/")
+						.then(response => 
+						{
+							console.log("Response:", response);
+							return response.json();
+						})
+						.then(data => 
+						{
+							console.log("Data:", data);
+							const dataDiv = document.getElementById('data');
+							
+							const title = dataDiv.querySelector('.title'); 
+							dataDiv.innerHTML = ""; 
+							dataDiv.appendChild(title); 
 
-            if (Array.isArray(data) && data.length > 0) {
-                data.forEach(fundraiser => {
-                    const header = document.createElement("h3");
-                    header.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
+							if (Array.isArray(data) && data.length > 0) 
+							{
+								data.forEach(fundraiser => 
+								{
+									const header = document.createElement("h3");
+									header.textContent = `${fundraiser.ORGANIZER} - ${fundraiser.CAPTION}`;
 
-                    const cityP = document.createElement("p");
-                    cityP.textContent = `City: ${fundraiser.CITY}`;
+									const cityP = document.createElement("p");
+									cityP.textContent = `City: ${fundraiser.CITY}`;
 
-                    const targetP = document.createElement("p");
-                    targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`;
+									const targetP = document.createElement("p");
+									targetP.textContent = `Target Funds: $${fundraiser.TARGET_FUNDING}`;
 
-                    const currentP = document.createElement("p");
-                    currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`;
-                    const idP = document.createElement("p");
-                    idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`;
-					
-					const categoryP = document.createElement("p"); 
-					categoryP.textContent = `Category: ${fundraiser.CATEGORY_NAME}`;
+									const currentP = document.createElement("p");
+									currentP.textContent = `Current Funds: $${fundraiser.CURRENT_FUNDING}`;
+									const idP = document.createElement("p");
+									idP.textContent = `ID: ${fundraiser.FUNDRAISER_ID}`;
+									
+									const categoryP = document.createElement("p"); 
+									categoryP.textContent = `Category: ${fundraiser.CATEGORY_NAME}`;
 
-                    // Append in order of display
-                    dataDiv.appendChild(header);
-                    dataDiv.appendChild(cityP);
-					dataDiv.appendChild(categoryP);
-                    dataDiv.appendChild(targetP);
-                    dataDiv.appendChild(currentP);
-                    dataDiv.appendChild(idP);
-                });
-            } else {
-                dataDiv.textContent = "No fundraiser data available.";
-            }
-        })
-        
-}
+									// Append in order of display
+									dataDiv.appendChild(header);
+									dataDiv.appendChild(cityP);
+									dataDiv.appendChild(categoryP);
+									dataDiv.appendChild(targetP);
+									dataDiv.appendChild(currentP);
+									dataDiv.appendChild(idP);
+									
+									//line break
+									const hr = document.createElement("hr");
+									dataDiv.appendChild(hr);
+									
+								});
+							} 
+							else 
+							{
+								dataDiv.textContent = "No fundraiser data available.";
+							}
+						})
+						
+				}
 
 			// Load active fundraisers on page load
 			document.addEventListener('DOMContentLoaded', loadActive);
 
-
-				
 					  </script>
 				
 		
@@ -154,25 +162,19 @@ Released   : 2024
 				<p>  Please feel free to contact us at any time regarding your fundraiser.</p>
 				<p>contact@betterworld.com.au</p>
 			</div>
-			
-
-			
+		
 	</div>
-	
-				
+		
 	
 	<div style="clear: both;">&nbsp;</div>
 	
 </div>
-
 
 <!-- footer text -->
 <div style="clear: both;">&nbsp;</div>
 <footer>
 		<p>Copyright (c) 2024. All rights reserved. Design by James Oliver</p>
 </footer>
-
-
 
 </body>
 </html>

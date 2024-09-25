@@ -67,7 +67,7 @@ img.right {
 	
 }
 
-hr { display: none; }
+
 
 .list1 {
 width:20%;
@@ -338,4 +338,11 @@ input[type="button"] {
 		.no-fundraisers {
     color: red;         /* Set text color to red */
     font-weight: bold;  /* Make text bold */
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #ccc; /* Light gray color */
+    margin: 10px 0;  /* Space above and below the line */
 }

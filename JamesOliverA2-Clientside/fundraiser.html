@@ -1,105 +1,151 @@
 <!DOCTYPE html>
+<!--
+Design: James Oliver
+Name       : James' assessment 2 webpage - fundraisers landing
+Description: A two-column, fixed-width design for 1024x768 screen resolutions.
+Version    : 1.0
+Released   : 2024
+-->
 
+<html>
 
-<!-- langauge set -->
-<html lang="en">
+	<head>
+		
+		
+		<!-- tab text-->
+		<title>Fundraisers For A Better World</title>
+		
+		<!-- style sheet link -->
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+		
+		<!-- text align for this specific page-->
+		<style>
+			p{text-align: left;
+			}
+		</style>
+		
+		
+	</head>
 
-<head>
-	<!-- font size set -->
-	<meta charset="utf-8">
-	
-	<!-- tab text set -->
-	<title>Search - Fundraisers For a Better World</title>
+	<body>
 
-	<!-- style sheet link  -->
-	<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
-</head>
-
-<body>
-
-
-<!-- menu -->
-<div id="header-wrapper">
-	<header>
-		<div id="menu">
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/search">Search Fundraisers</a></li>		
-			</ul>
-		</div>
-
-	</header>	
-</div>
-
-
-
-<!-- page content start-->
-<div id="page">
-
-	<div id="logo">
-		<!-- page heading -->
-		<h1>Fundraisers For a Better World</h1>
+	<!-- menu -->
+	<div id="header-wrapper">
+		<header>
+			<div id="menu">
+				<ul>
+					<li><a href="/">Home</a></li>
+					<li><a href="search">Search Fundraiers</a></li>
+				</ul>
+			</div>
+		
+		</header>
 	</div>
-	
-	<hr/>
-	
-	<div id="content">
-		
-		<!-- Title box-->
-		<div class="post">
-			<h2 class="title">fundriaser name</h2>
-		</div>
-		
-		
-		<!-- fundraiser info -->
-		<div class="post">
-			
-		</div>
-	
-		
 
-		
+	<!-- page content start-->
+	<div id="page">
+		<div id="logo">
+		<!-- page heading -->
+			<h1>Fundraisers for A Better World</h1>
+		</div>
+
+
+		<!-- content fetched wil display in this box -->
+		<div class="post">
+			<div id="fundraiser-details">
+			</div> 
+		</div>
+
+    <script>
 	
-<div style="clear: both;">&nbsp;</div>
-	
-</div>
-		
-			
-			
-    
-<script>
-		
-		function getQueryParams()
+		//donate button function
+		function donate()
 		{
-			const params={};
-			const queryString = windows.location.search.substring(1);
-			conts pairs = queryString.split("&");
+			alert("This feature is under contruction");
+		}
+		
+		//onload
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const fundraiserId = params.get('id'); 
+
+            if (fundraiserId) {
+                fetchFundraiserDetails(fundraiserId); 
+            } else {
+                displayError('No fundraiser ID provided.');
+            }
+        };
+		
+		//fetches details provide by url from hyperlink source
+        function fetchFundraiserDetails(id) {
+            fetch(`http://localhost:8080/api/crowdfunding_db/ID/${encodeURIComponent(id)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(fundraiser => {
+                    displayFundraiserDetails(fundraiser);
+                })
+                .catch(error => {
+                    console.error('Error fetching fundraiser details:', error);
+                    displayError('Failed to load fundraiser details.');
+                });
+        }
+
+		//displays fetched data 
+        function displayFundraiserDetails(fundraiser) 
+		{
+			const detailDiv = document.getElementById('fundraiser-details');
+			detailDiv.innerHTML = ''; 
+
 			
-			pairs.forEach(pair =>
+			const data = fundraiser[0]; 
+
+			const header = document.createElement("h2");
+			header.textContent = `${data.ORGANIZER} - ${data.CAPTION}`;
+			
+			const cityP = document.createElement("p");
+			cityP.textContent = `City: ${data.CITY}`;
+			
+			const targetP = document.createElement("p");
+			targetP.textContent = `Target Funds: $${data.TARGET_FUNDING}`;
+			
+			const currentP = document.createElement("p");
+			currentP.textContent = `Current Funds: $${data.CURRENT_FUNDING}`;
+			
+			const stateP = document.createElement("p");
+			stateP.textContent = `Active: ${data.ACTIVE === 1 ? 'Yes' : 'Currently Not Active'}`;
+			
+			const idP = document.createElement("p");
+			idP.textContent = `ID: ${data.FUNDRAISER_ID}`;
+			
+			const donateButton = document.createElement("button");
+			//button text
+			donateButton.textContent = `Donate to ${data.ORGANIZER}`; 
+			donateButton.onclick = () => 
 			{
-				const [key,value] = pair.split("=");
-				params[decodeURIComponent(key)] = decodeURIComponent(value);
-				});
-				
-				return params;
-				}
-</script>
-	
-	
+				// alert/logic
+				alert("This feature is under contruction");
+			};
 
+			detailDiv.appendChild(header);
+			detailDiv.appendChild(cityP);
+			detailDiv.appendChild(targetP);
+			detailDiv.appendChild(currentP);
+			detailDiv.appendChild(stateP);
+			detailDiv.appendChild(idP);
+			detailDiv.appendChild(donateButton);
 
-<!-- footer text -->
-<div style="clear: both;">&nbsp;</div>
-<footer>
-		<p>Copyright (c) 2024. All rights reserved. Design by James Oliver</p>
-</footer>
+		}
 
-
-
+		//error message 
+        function displayError(message) 
+		{
+            const detailDiv = document.getElementById('fundraiser-details');
+            detailDiv.innerHTML = `<p style="color: red;">${message}</p>`;
+        }
+    </script>
 </body>
 </html>
-
-</html>
-			
-	
-	
